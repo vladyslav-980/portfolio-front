@@ -1,17 +1,21 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Github, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Braces, GitBranch, Github, Linkedin, Mail, MapPin, Monitor, Rocket, Server, X } from "lucide-react";
 import { content, Language } from "@/data/content";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
 export default function Portfolio() {
   const [language, setLanguage] = useState<Language>("uk");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const t = content[language];
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("portfolio-language");
+    if (savedLanguage === "uk" || savedLanguage === "en") setLanguage(savedLanguage);
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -41,83 +45,63 @@ export default function Portfolio() {
 
   return (
     <main>
-      <header className="site-header">
-        <a className="logo" href="#top" aria-label="Vladyslav Huminiuk — home"><span>VH</span><i /></a>
-        <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
-          {t.nav.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>)}
-        </nav>
-        <div className="header-actions">
-          <div className="language" aria-label="Language selector">
-            <button className={language === "uk" ? "active" : ""} onClick={() => setLanguage("uk")}>UA</button>
-            <span>/</span>
-            <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")}>EN</button>
-          </div>
-          <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">{menuOpen ? <X /> : <Menu />}</button>
-        </div>
-      </header>
-
+      <div className="main-bento">
       <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow"><span />{t.eyebrow}</p>
-          <h1><small>{t.hello}</small>{t.title}</h1>
-          <p className="hero-intro">{t.intro}</p>
-          <div className="hero-actions">
-            <button className="primary-button" onClick={() => { setStatus("idle"); setContactOpen(true); }}>{t.contact}<ArrowUpRight /></button>
-            <a className="text-link" href="#projects">{t.projectsButton}<ArrowDownRight /></a>
-          </div>
-          <div className="hero-meta"><span><MapPin size={16} />{t.location}</span><span className="status-dot">{t.available}</span></div>
-        </div>
         <div className="portrait-wrap">
+          <p className="eyebrow portrait-status"><span />{t.eyebrow}</p>
           <div className="portrait-frame">
-            <img src="https://github.com/70X14.png" alt="Vladyslav Huminiuk" />
-            <span className="code-tag tag-one">&lt;React /&gt;</span>
-            <span className="code-tag tag-two">Node.js</span>
+            <div className="portrait-image-plane"><img src="/vlad-pixel-portrait-v2.png" alt="Vladyslav Huminiuk" /></div>
+            {["<React />", "Node.js", "Next.js"].map((stack, index) => <span key={stack} className={`code-tag stack-tag stack-tag-${index + 1}`}>{stack}</span>)}
+            <p>FULL-STACK DEVELOPER</p>
           </div>
-          <p>FULL-STACK<br />DEVELOPER</p>
+          <div className="portrait-details">
+            <p className="hero-intro">{t.intro}</p>
+            <div className="hero-meta"><span><MapPin size={16} />{t.location}</span><span className="portrait-availability"><i aria-hidden="true">//</i><b aria-hidden="true" />{t.available}</span></div>
+          </div>
+          <div className="portrait-controls">
+            <div className="portrait-actions">
+              <button className="primary-button" onClick={() => { setStatus("idle"); setContactOpen(true); }}>{t.contact}<ArrowUpRight /></button>
+              <a className="text-link" href="/projects">{t.projectsButton}<ArrowDownRight /></a>
+            </div>
+            <div className="portrait-socials">
+              <a href="https://github.com/70X14" target="_blank" rel="noreferrer" aria-label="GitHub"><Github />GitHub</a>
+              <a href="https://www.linkedin.com/in/vladyslav-huminiuk" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin />LinkedIn</a>
+              <a href="mailto:vldgum@gmail.com" aria-label="Email"><Mail />Email</a>
+            </div>
+          </div>
+        </div>
+        <div className="hero-copy">
+          <div className="left-profile-card">
+            <h1><small>{t.hello}</small><span className="hero-title-text">{t.title}</span></h1>
+            <section className="profile-section about left-about" id="about">
+              <p className="section-kicker">{t.aboutKicker}</p>
+              <div className="profile-card">
+                <div className="profile-info"><h2>{t.aboutTitle}</h2><p className="lead">{t.aboutText}</p></div>
+              </div>
+            </section>
+          </div>
         </div>
       </section>
 
-      <section className="section about" id="about">
-        <p className="section-kicker">{t.aboutKicker}</p>
-        <div className="section-grid">
-          <h2>{t.aboutTitle}</h2>
-          <div><p className="lead">{t.aboutText}</p><a className="inline-email" href="mailto:vldgum@gmail.com">vldgum@gmail.com <ArrowUpRight /></a></div>
-        </div>
-        <div className="facts">{t.facts.map(([value, label]) => <div key={label}><strong>{value}</strong><span>{label}</span></div>)}</div>
-      </section>
-
-      <section className="section dark-section" id="skills">
+      <div className="profile-content">
+      <section className="section profile-section dark-section" id="skills">
         <p className="section-kicker">{t.skillsKicker}</p>
-        <div className="section-grid"><h2>{t.skillsTitle}</h2><p className="mono-note">01 — BUILD<br />02 — TEST<br />03 — IMPROVE</p></div>
-        <div className="skill-list">{t.skillGroups.map(([title, list], index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{list}</p></article>)}</div>
+        <div className="profile-card">
+          <div className="profile-info"><h2>{t.skillsTitle}</h2><p className="mono-note"><Braces aria-hidden="true" /><span>BUILD · TEST · IMPROVE</span><Rocket aria-hidden="true" /></p><div className="skill-list">{t.skillGroups.map(([title, list], index) => {
+            const SkillIcon = [Monitor, Server, GitBranch][index];
+            return <article key={title}><h3>{title}</h3><SkillIcon className="skill-group-icon" aria-hidden="true" /><ul>{list.split(", ").map((skill) => <li key={skill}>{skill}</li>)}</ul></article>;
+          })}</div></div>
+        </div>
       </section>
 
-      <section className="section projects" id="projects">
-        <p className="section-kicker">{t.projectsKicker}</p>
-        <div className="section-grid"><h2>{t.projectsTitle}</h2></div>
-        <div className="project-list">{t.projects.map((project, index) => (
-          <article className="project-card" key={project.title}>
-            <div className={`project-visual visual-${index + 1}`}><span>0{index + 1}</span><strong>{project.title.slice(0, 2).toUpperCase()}</strong></div>
-            <div className="project-info"><p>{project.type}</p><h3>{project.title}</h3><p className="project-description">{project.description}</p><span className="stack">{project.stack}</span><a href={project.link} target="_blank" rel="noreferrer">{t.viewProject}<ArrowUpRight /></a></div>
-          </article>
-        ))}</div>
+      <section className="section profile-section education">
+        <p className="section-kicker">{t.educationKicker}</p>
+        <div className="profile-card">
+          <div className="profile-info"><h2>{t.educationTitle}</h2><div className="timeline">{t.education.map(([year, degree, place]) => <article key={degree}><time>{year}</time><div><h3>{degree}</h3><p>{place}</p></div></article>)}</div></div>
+        </div>
       </section>
-
-      <section className="section reviews" id="reviews">
-        <p className="section-kicker">{t.reviewsKicker}</p><div className="section-grid"><h2>{t.reviewsTitle}</h2></div>
-        <div className="review-grid">{t.reviews.map((review) => <blockquote key={review.author}><span>“</span><p>{review.quote}</p><footer><strong>{review.author}</strong><small>{review.role}</small></footer></blockquote>)}</div>
-      </section>
-
-      <section className="section education">
-        <p className="section-kicker">{t.educationKicker}</p><div className="section-grid"><h2>{t.educationTitle}</h2></div>
-        <div className="timeline">{t.education.map(([year, degree, place]) => <article key={degree}><time>{year}</time><div><h3>{degree}</h3><p>{place}</p></div></article>)}</div>
-      </section>
-
-      <footer className="footer" id="contact">
-        <div><p className="section-kicker">06 / Contact</p><h2>{t.footerTitle}</h2><p>{t.footerText}</p><button className="primary-button light" onClick={() => { setStatus("idle"); setContactOpen(true); }}>{t.contact}<ArrowUpRight /></button></div>
-        <div className="socials"><a href="https://github.com/70X14" target="_blank" rel="noreferrer"><Github />GitHub</a><a href="https://www.linkedin.com/in/vladyslav-huminiuk" target="_blank" rel="noreferrer"><Linkedin />LinkedIn</a><a href="mailto:vldgum@gmail.com"><Mail />Email</a></div>
-        <p className="copyright">© {new Date().getFullYear()} Vladyslav Huminiuk</p>
-      </footer>
+      </div>
+      </div>
 
       {contactOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setContactOpen(false); }}>
         <section className="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-title">
@@ -126,7 +110,7 @@ export default function Portfolio() {
           <form onSubmit={submitContact}>
             <label>{t.name}<input name="name" type="text" minLength={2} maxLength={80} required /></label>
             <label>{t.email}<input name="email" type="email" maxLength={120} required /></label>
-            <label>{t.message}<textarea name="message" minLength={20} maxLength={3000} rows={6} required /></label>
+            <label>{t.message}<textarea name="message" minLength={20} maxLength={500} rows={4} required /><small className="character-limit">{t.messageLimit}</small></label>
             <input className="honey" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <button className="primary-button" type="submit" disabled={status === "loading"}>{status === "loading" ? t.sending : t.send}<ArrowUpRight /></button>
             {status === "success" && <p className="form-message success">{t.success}</p>}
