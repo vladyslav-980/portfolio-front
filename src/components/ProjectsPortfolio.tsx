@@ -24,7 +24,7 @@ export default function ProjectsPortfolio() {
   }, [language]);
 
   const navHref = (id: string) => {
-    if (id === "about") return "/#top";
+    if (id === "about") return "/#about";
     if (id === "projects") return "#projects";
     if (id === "reviews") return "#reviews";
     return `/#${id}`;

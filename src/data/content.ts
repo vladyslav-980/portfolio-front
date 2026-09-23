@@ -3,11 +3,11 @@ export type Language = "uk" | "en";
 export const content = {
   uk: {
     nav: [
-      ["about", "Про мене"], ["contact", "Контакти"], ["projects", "Проєкти"],
+      ["about", "Про мене"], ["skills", "Досвід"], ["education", "Освіта"], ["contact", "Контакти"], ["projects", "Проєкти"],
     ],
     eyebrow: "Відкритий до нових проєктів",
-    hello: "Привіт, я Влад",
-    title: "Проєктую та створюю вебпродукти — від першого пікселя до стабільного API.",
+    hello: "Привіт, я Влад )",
+    title: "Проєктую та створюю вебпродукти — від першого пікселя до стабільного API",
     intro: "Full-Stack JavaScript Developer із фокусом на React, Next.js і Node.js. Перетворюю складні задачі на зрозумілі, швидкі та адаптивні продукти.",
     contact: "Зв’язатися зі мною",
     projectsButton: "Переглянути проєкти",
@@ -16,6 +16,13 @@ export const content = {
     aboutKicker: "Про мене",
     aboutTitle: "Поєдную продуманий дизайн, чистий код і практичну бізнес-логіку.",
     aboutText: "Я Junior Frontend / Full-Stack Developer, який перетворює складні вимоги на зрозумілі цифрові продукти. Створюю адаптивні інтерфейси, продумую структуру компонентів, інтегрую REST API та розробляю серверну логіку. Працюю з макетами й архітектурою, використовую Git-flow, тестую функціональність і готую проєкти до деплою. Дбаю про швидкість, доступність, передбачувану поведінку та зручність подальшої підтримки продукту.",
+    aboutTabs: [
+      ["Про мене", "Я Junior Frontend / Full-Stack Developer із Києва. Поєдную продуманий дизайн, чистий код і практичну бізнес-логіку, щоб перетворювати складні вимоги на зрозумілі цифрові продукти. Люблю системність, уважність до деталей і рішення, які зручно підтримувати після релізу"],
+      ["Підхід", "Починаю з цілей бізнесу та реальної задачі користувача. Аналізую макет, планую компоненти, стани й API, після чого послідовно реалізую функціональність. Перевіряю адаптивність, доступність і крайні сценарії, тестую результат та готую код до подальшого розвитку"],
+      ["Що створюю", "Створюю адаптивні інтерфейси на React і Next.js, інтегрую REST API та розробляю серверну логіку на Node.js. Реалізую форми, авторизацію, роботу з даними й інтерактивні елементи. Налаштовую структуру проєкту, Git-flow і деплой готового продукту"],
+      ["Вивчаю", "Постійно поглиблюю React, Next.js, TypeScript і Node.js. Окремо працюю над архітектурою компонентів, продуктивністю, доступністю та тестуванням. Досліджую сучасні підходи до Full-Stack розробки й одразу закріплюю нові знання у практичних проєктах"],
+    ],
+    aboutFacts: [["UA / EN", "мови"], ["REMOTE", "формат"]],
     facts: [
       ["872+", "годин Full-Stack навчання"], ["3", "завершені комерційні й командні проєкти"], ["UA / EN", "мови портфоліо"],
     ],
@@ -43,7 +50,7 @@ export const content = {
     educationKicker: "Освіта",
     educationTitle: "Постійно поглиблюю знання",
     education: [
-      ["2025—2026", "Fullstack Developer", "GoIT · 872 години"],
+      ["2025—2026", "Fullstack Developer", "GoIT"],
       ["2023—2025", "Магістр інформаційних технологій", "Державний університет інформаційно-комунікаційних технологій"],
       ["2021—2023", "Бакалавр інформаційних технологій", "Київський фаховий коледж зв’язку"],
     ],
@@ -62,7 +69,7 @@ export const content = {
     close: "Закрити форму",
   },
   en: {
-    nav: [["about", "About"], ["contact", "Contact"], ["projects", "Projects"]],
+    nav: [["about", "About"], ["skills", "Experience"], ["education", "Education"], ["contact", "Contact"], ["projects", "Projects"]],
     eyebrow: "Open to new opportunities",
     hello: "Hi, I’m Vladyslav.",
     title: "I design and build web products—from the first pixel to a reliable API.",
@@ -70,6 +77,13 @@ export const content = {
     contact: "Contact me", projectsButton: "View projects", available: "Available for remote work", location: "Kyiv, Ukraine",
     aboutKicker: "About me", aboutTitle: "I combine thoughtful design, clean code and practical business logic.",
     aboutText: "I’m a Junior Frontend / Full-Stack Developer who turns complex requirements into clear digital products. I build responsive interfaces, plan component structure, integrate REST APIs and develop server-side logic. I work with layouts and architecture, use Git flow, test functionality and prepare projects for deployment. I focus on speed, accessibility, predictable behavior and long-term product maintainability.",
+    aboutTabs: [
+      ["About", "I’m a Junior Frontend / Full-Stack Developer based in Kyiv. I combine thoughtful design, clean code and practical business logic to turn complex requirements into clear digital products. I value systematic work, attention to detail and solutions that remain easy to maintain after release"],
+      ["Approach", "I begin with the business goal and the user’s actual problem. I analyse the design, plan components, states and APIs, then implement the functionality step by step. I check responsiveness, accessibility and edge cases, test the result and prepare the code for further development"],
+      ["What I build", "I create responsive React and Next.js interfaces, integrate REST APIs and develop server-side logic with Node.js. I implement forms, authentication, data flows and interactive elements, then organise the project structure, Git flow and production deployment"],
+      ["Learning", "I continuously deepen my React, Next.js, TypeScript and Node.js knowledge. I also focus on component architecture, performance, accessibility and testing. I explore modern Full-Stack practices and reinforce every new concept through practical projects"],
+    ],
+    aboutFacts: [["UA / EN", "languages"], ["REMOTE", "format"]],
     facts: [["872+", "hours of Full-Stack training"], ["3", "completed commercial and team projects"], ["UA / EN", "portfolio languages"]],
     skillsKicker: "Experience & skills", skillsTitle: "My working stack",
     skillGroups: [
@@ -89,7 +103,7 @@ export const content = {
       { quote: "A reliable team developer: owns his part, explains decisions and works carefully with Git.", author: "Tasteorama team", role: "Full-Stack project" },
     ],
     educationKicker: "Education", educationTitle: "Always deepening my knowledge",
-    education: [["2025—2026", "Fullstack Developer", "GoIT · 872 hours"], ["2023—2025", "Master’s in Information Technology", "State University of Information and Communication Technologies"], ["2021—2023", "Bachelor’s in Information Technology", "Kyiv Applied College of Telecommunications"]],
+    education: [["2025—2026", "Fullstack Developer", "GoIT"], ["2023—2025", "Master’s in Information Technology", "State University of Information and Communication Technologies"], ["2021—2023", "Bachelor’s in Information Technology", "Kyiv Applied College of Telecommunications"]],
     footerTitle: "Have a project or an opening? Let’s talk.", footerText: "Open to Junior Frontend / React / Next.js roles and Full-Stack tasks.",
     formTitle: "Send me a message", formText: "Fill in the form—your message will be delivered to vldgum@gmail.com.",
     name: "Name", email: "Email", message: "Cover letter", messageLimit: "Maximum 500 characters", send: "Send message", sending: "Sending…",
