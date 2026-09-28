@@ -34,7 +34,7 @@ export const content = {
       ["Workflow", "Git, GitHub, pull requests, Agile, Figma, npm, Vercel, Render"],
     ],
     projectsKicker: "Вибрані проєкти",
-    projectsTitle: "Код, який розв’язує реальні задачі.",
+    projectsTitle: "Код, який\nрозв’язує реальні задачі",
     projects: [
       { title: "SavMed Clinic", type: "Full-Stack / Commercial", description: "Тримовний сайт медичної клініки з адаптивним інтерфейсом, записом і скасуванням консультацій, API та MongoDB.", stack: "Next.js · TypeScript · Node.js · Express · MongoDB", link: "https://savmed.net" },
       { title: "Tasteorama", type: "Team project", description: "Застосунок рецептів із пошуком, фільтрами, станами завантаження, валідацією, власним Route Handler та REST API.", stack: "Next.js · React · Node.js · MongoDB", link: "https://github.com/Andross-s/final_project_Fullstack-Force_front" },
@@ -92,7 +92,7 @@ export const content = {
       ["Backend", "Node.js, Express.js, MongoDB, Mongoose, REST API, JWT, cookies, validation"],
       ["Workflow", "Git, GitHub, pull requests, Agile, Figma, npm, Vercel, Render"],
     ],
-    projectsKicker: "Selected projects", projectsTitle: "Code that solves real problems.",
+    projectsKicker: "Selected projects", projectsTitle: "Code that\nsolves real problems",
     projects: [
       { title: "SavMed Clinic", type: "Full-Stack / Commercial", description: "A multilingual medical clinic website with responsive UI, appointment booking and cancellation, API and MongoDB.", stack: "Next.js · TypeScript · Node.js · Express · MongoDB", link: "https://savmed.net" },
       { title: "Tasteorama", type: "Team project", description: "Recipe application with search, filters, loading states, validation, a custom Route Handler and REST API.", stack: "Next.js · React · Node.js · MongoDB", link: "https://github.com/Andross-s/final_project_Fullstack-Force_front" },

@@ -3,8 +3,7 @@
 import { FormEvent, MouseEvent, useEffect, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu, Send, UserRound, X } from "lucide-react";
 import { content, Language } from "@/data/content";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+import { API_URL } from "@/lib/api";
 
 const NavItemIcon = ({ id }: { id: string }) => {
   const Icon = id === "about" ? UserRound : id === "skills" ? Layers3 : id === "education" ? GraduationCap : id === "contact" ? Send : FolderKanban;

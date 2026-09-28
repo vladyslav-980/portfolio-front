@@ -1,8 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowUpRight, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, Menu, Send, UserRound, X } from "lucide-react";
+import { ArrowUpRight, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, Menu, Search, Send, UserRound, X } from "lucide-react";
 import { content, Language } from "@/data/content";
+import { API_URL } from "@/lib/api";
+
+type ApiProject = {
+  _id: string;
+  slug: string;
+  title: Record<Language, string>;
+  description: Record<Language, string>;
+  type: string;
+  stack: string[];
+  imageUrl?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+};
 
 const NavItemIcon = ({ id }: { id: string }) => {
   const Icon = id === "about" ? UserRound : id === "skills" ? Layers3 : id === "education" ? GraduationCap : id === "contact" ? Send : FolderKanban;
@@ -12,7 +25,63 @@ const NavItemIcon = ({ id }: { id: string }) => {
 export default function ProjectsPortfolio() {
   const [language, setLanguage] = useState<Language>("uk");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [projectFilter, setProjectFilter] = useState("all");
+  const [projectSort, setProjectSort] = useState("default");
+  const [projects, setProjects] = useState<ApiProject[]>([]);
+  const [projectsStatus, setProjectsStatus] = useState<"loading" | "success" | "error">("loading");
   const t = content[language];
+
+  const filterCopy = language === "uk" ? {
+    title: "Пошук і сортування", search: "Пошук проєктів", placeholder: "Назва, технологія або опис...",
+    all: "Усі", commercial: "Комерційні", team: "Командні", landing: "Лендинги",
+    sort: "Сортування", defaultSort: "За замовчуванням", titleAsc: "Назва: А—Я", titleDesc: "Назва: Я—А",
+    empty: "Проєктів за цими параметрами не знайдено", loading: "Завантаження проєктів...", error: "Не вдалося завантажити проєкти",
+  } : {
+    title: "Search & sort", search: "Search projects", placeholder: "Title, technology or description...",
+    all: "All", commercial: "Commercial", team: "Team", landing: "Landings",
+    sort: "Sort by", defaultSort: "Default order", titleAsc: "Title: A—Z", titleDesc: "Title: Z—A",
+    empty: "No projects match these filters", loading: "Loading projects...", error: "Could not load projects",
+  };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setProjectsStatus("loading");
+      const params = new URLSearchParams({ page: "1", limit: "50" });
+      if (query.trim()) params.set("search", query.trim());
+      if (projectFilter !== "all") params.set("type", projectFilter);
+      if (projectSort !== "default") {
+        params.set("sort", "title");
+        params.set("order", projectSort === "title-desc" ? "desc" : "asc");
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/api/projects?${params}`, { signal: controller.signal });
+        if (!response.ok) throw new Error("Projects request failed");
+        const data = await response.json() as { items?: ApiProject[] };
+        setProjects(Array.isArray(data.items) ? data.items : []);
+        setProjectsStatus("success");
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setProjectsStatus("error");
+      }
+    }, 350);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query, projectFilter, projectSort]);
+
+  const projectTypeLabel = (type: string) => {
+    const labels: Record<string, Record<Language, string>> = {
+      commercial: { uk: "Комерційний проєкт", en: "Commercial project" },
+      team: { uk: "Командний проєкт", en: "Team project" },
+      landing: { uk: "Адаптивний лендинг", en: "Responsive landing" },
+    };
+    return labels[type]?.[language] ?? type;
+  };
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("portfolio-language");
@@ -60,20 +129,28 @@ export default function ProjectsPortfolio() {
         </div>
       </header>
 
-      <section className="projects-hero">
-        <a className="back-link" href="/"><ArrowLeft />{language === "uk" ? "На головну" : "Back home"}</a>
-        <p className="section-kicker">{t.projectsKicker}</p>
-        <h1>{t.projectsTitle}</h1>
-        <p>{language === "uk" ? "Добірка комерційних, командних і навчальних робіт — від інтерфейсу до серверної логіки." : "A selection of commercial, team and educational work — from interface to server-side logic."}</p>
+      <section className="projects-filter-panel" id="projects" aria-labelledby="projects-filter-title">
+        <p className="section-kicker" id="projects-filter-title">// {filterCopy.title}</p>
+        <div className="projects-filter-controls">
+          <label className="project-search"><span>{filterCopy.search}</span><span className="project-search-field"><Search aria-hidden="true" /><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={filterCopy.placeholder} /></span></label>
+          <fieldset className="project-filter-group">
+            <legend>{language === "uk" ? "Тип проєкту" : "Project type"}</legend>
+            {(["all", "commercial", "team", "landing"] as const).map((filter) => <button type="button" key={filter} className={projectFilter === filter ? "active" : ""} onClick={() => setProjectFilter(filter)}>{filterCopy[filter]}</button>)}
+          </fieldset>
+          <label className="project-sort"><span>{filterCopy.sort}</span><select value={projectSort} onChange={(event) => setProjectSort(event.target.value)}><option value="default">{filterCopy.defaultSort}</option><option value="title-asc">{filterCopy.titleAsc}</option><option value="title-desc">{filterCopy.titleDesc}</option></select></label>
+        </div>
       </section>
 
-      <section className="section projects" id="projects">
-        <div className="project-list">{t.projects.map((project, index) => (
-          <article className="project-card" key={project.title}>
-            <div className={`project-visual visual-${index + 1}`}><strong>{project.title.slice(0, 2).toUpperCase()}</strong></div>
-            <div className="project-info"><p>{project.type}</p><h2>{project.title}</h2><p className="project-description">{project.description}</p><span className="stack">{project.stack}</span><a href={project.link} target="_blank" rel="noreferrer">{t.viewProject}<ArrowUpRight /></a></div>
+      <section className="section projects">
+        <div className="project-list">{projectsStatus === "success" && projects.map((project, index) => (
+          <article className="project-card" key={project._id}>
+            <div className={`project-visual visual-${index % 3 + 1}`} style={project.imageUrl ? { backgroundImage: `url(${project.imageUrl})` } : undefined}><strong>{project.title[language].slice(0, 2).toUpperCase()}</strong></div>
+            <div className="project-info"><p>{projectTypeLabel(project.type)}</p><h2>{project.title[language]}</h2><p className="project-description">{project.description[language]}</p><span className="stack">{project.stack.join(" · ")}</span><a href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer">{t.viewProject}<ArrowUpRight /></a></div>
           </article>
         ))}</div>
+        {projectsStatus === "loading" && <p className="projects-empty projects-loading">{filterCopy.loading}</p>}
+        {projectsStatus === "error" && <p className="projects-empty">{filterCopy.error}</p>}
+        {projectsStatus === "success" && projects.length === 0 && <p className="projects-empty">{filterCopy.empty}</p>}
       </section>
 
       <section className="section reviews" id="reviews">
