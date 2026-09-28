@@ -212,10 +212,19 @@ a { color: inherit; text-decoration: none; }
 .contact-modal .section-kicker { margin: 0; }
 .contact-modal h2 { font-family: var(--font-press-start), "Courier New", monospace; font-size: clamp(32px,4vw,50px); font-weight: 400; line-height: 1.16; overflow-wrap: anywhere; letter-spacing: .01em; margin: 12px 0 8px; padding-right: 36px; text-transform: uppercase; }
 .contact-modal>p:not(.section-kicker) { margin: 0; color: #c4c9d0; line-height: 1.4; }.modal-close { position: absolute; right: 14px; top: 14px; border: 2px solid var(--white); background: var(--black); color: var(--white); cursor: pointer; padding: 6px; }
-.contact-modal form { display: grid; gap: 12px; margin-top: 18px; }.contact-modal label { display: grid; gap: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--green); }
+.modal-close { transition: color .14s ease, background .14s ease, border-color .14s ease, transform .14s ease, box-shadow .14s ease; }
+.modal-close:hover { border-color: var(--green); background: var(--green); color: var(--black); box-shadow: 4px 4px 0 var(--white); transform: translate(-2px,-2px); }
+.modal-close:focus-visible { border-color: var(--green); color: var(--green); outline: 2px solid var(--green); outline-offset: 4px; box-shadow: 4px 4px 0 var(--blue-light); }
+.modal-close:active { transform: translate(2px,2px); box-shadow: none; }
+.contact-modal form { display: grid; gap: 4px; margin-top: 18px; }.contact-modal label { display: grid; gap: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--green); }
 .contact-modal input, .contact-modal textarea { width: 100%; border: 2px solid var(--white); background: var(--black); color: var(--white); padding: 10px 12px; outline: none; }
+.contact-modal input, .contact-modal textarea { font-weight: 300; }
 .contact-modal input:focus, .contact-modal textarea:focus { border-color: var(--green); box-shadow: 4px 4px 0 var(--green); }.contact-modal textarea { height: 88px; resize: none; }
 .character-limit { color: #aeb6c3; font-size: 11px; font-weight: 400; letter-spacing: .04em; text-transform: none; }
+.contact-modal input.invalid, .contact-modal textarea.invalid { border-color: #ff6060; box-shadow: 4px 4px 0 var(--blue-light); }
+.field-error { position: relative; visibility: hidden; opacity: 0; width: max-content; max-width: 100%; min-height: 29px; margin-top: 2px; padding: 7px 10px 7px 28px; border: 1px solid #ff6060; background: var(--black); color: #ff8080; box-shadow: 3px 3px 0 var(--blue-light); font-size: 11px; font-weight: 600; line-height: 1.2; letter-spacing: .04em; text-transform: uppercase; transition: opacity .14s ease; }
+.field-error.visible { visibility: visible; opacity: 1; }
+.field-error::before { content: "!"; position: absolute; left: 8px; top: 50%; display: grid; place-items: center; width: 12px; height: 12px; background: #ff6060; color: var(--black); font: 700 10px/1 monospace; transform: translateY(-50%); }
 .contact-modal form .primary-button { justify-self: start; }.contact-modal .honey { position: absolute; left: -9999px; }.form-message { margin: 0!important; font-size: 13px; }.form-message.success { color: var(--green); }.form-message.error { color: #ff6060; }
 html[lang="en"] body { font-family: var(--font-handjet), "Courier New", monospace; font-weight: 350; }
 html[lang="en"] .hero h1, html[lang="en"] .section h2, html[lang="en"] .footer h2, html[lang="en"] .skill-list h3, html[lang="en"] .projects-hero h1, html[lang="en"] .project-info h2, html[lang="en"] .project-info h3, html[lang="en"] .contact-modal h2 { font-family: var(--font-press-start), "Courier New", monospace; font-weight: 400; }
@@ -229,6 +238,13 @@ html[lang="uk"] .contact-modal h2 { font-size: clamp(28px,4vw,46px); line-height
 html[lang="uk"] body { font-weight: 350; }
 html[lang="uk"] .hero h1 small, html[lang="uk"] .nav, html[lang="uk"] .language, html[lang="uk"] .eyebrow, html[lang="uk"] .section-kicker, html[lang="uk"] .hero-meta, html[lang="uk"] .primary-button, html[lang="uk"] .text-link, html[lang="uk"] .inline-email, html[lang="uk"] .code-tag, html[lang="uk"] .mono-note, html[lang="uk"] .project-info>p:first-child, html[lang="uk"] .project-info a, html[lang="uk"] .back-link, html[lang="uk"] .contact-modal label { font-family: var(--font-handjet), "Courier New", monospace; font-weight: 500; }
 html[lang="uk"] .hero-intro, html[lang="uk"] .lead, html[lang="uk"] .skill-list p, html[lang="uk"] .project-description, html[lang="uk"] .stack, html[lang="uk"] .review-grid, html[lang="uk"] .timeline, html[lang="uk"] .footer>div:first-child>p:not(.section-kicker), html[lang="uk"] .contact-modal>p:not(.section-kicker), html[lang="uk"] .contact-modal input, html[lang="uk"] .contact-modal textarea, html[lang="uk"] .form-message { font-family: var(--font-handjet), "Courier New", monospace; font-weight: 350; }
+
+@media(min-width:861px) {
+  .main-bento { padding-bottom: 48px; }
+  .contact-modal h2 { word-spacing: -.48em; }
+  html[lang="en"] .contact-modal h2 { font-size: clamp(21px,calc(2vw + 5px),30px); }
+  html[lang="uk"] .contact-modal h2 { font-size: clamp(19px,calc(2vw + 5px),28px); }
+}
 
 html .profile-content .profile-info h2 { min-height: 0; font-size: clamp(26px,3vw,44px); line-height: 1.18; }
 .profile-content .profile-info .lead { min-height: 0; margin-top: 14px; margin-bottom: 18px; font-size: clamp(16px,1.45vw,21px); line-height: 1.4; }

@@ -29,6 +29,7 @@ export default function Portfolio() {
   const [displayedAboutText, setDisplayedAboutText] = useState("");
   const [contactOpen, setContactOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const t = content[language];
 
   const changeLanguage = (nextLanguage: Language) => {
@@ -82,11 +83,43 @@ export default function Portfolio() {
     return () => window.clearInterval(typingTimer);
   }, [activeAboutTab, language, t.aboutTabs]);
 
+  const validateContactField = (fieldName: string, fieldValue: string) => {
+    const value = fieldValue.trim();
+    if (fieldName === "name") return value.length < 2 ? t.validation.name : "";
+    if (fieldName === "email") {
+      if (!value) return t.validation.emailRequired;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : t.validation.emailInvalid;
+    }
+    if (fieldName === "message") return value.length < 20 ? t.validation.message : "";
+    return "";
+  };
+
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("loading");
     const form = event.currentTarget;
-    const payload = Object.fromEntries(new FormData(form));
+    const formData = new FormData(form);
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+    const nextErrors: Record<string, string> = {};
+
+    const values = { name, email, message };
+    Object.entries(values).forEach(([fieldName, fieldValue]) => {
+      const error = validateContactField(fieldName, fieldValue);
+      if (error) nextErrors[fieldName] = error;
+    });
+
+    if (Object.keys(nextErrors).length) {
+      setFieldErrors(nextErrors);
+      setStatus("idle");
+      const firstInvalidField = Object.keys(nextErrors)[0];
+      (form.elements.namedItem(firstInvalidField) as HTMLElement | null)?.focus();
+      return;
+    }
+
+    setFieldErrors({});
+    setStatus("loading");
+    const payload = Object.fromEntries(formData);
 
     try {
       const response = await fetch(`${API_URL}/api/contact`, {
@@ -96,6 +129,7 @@ export default function Portfolio() {
       });
       if (!response.ok) throw new Error("Request failed");
       form.reset();
+      setFieldErrors({});
       setStatus("success");
     } catch {
       setStatus("error");
@@ -141,7 +175,7 @@ export default function Portfolio() {
           </div>
           <div className="portrait-controls">
             <div className="portrait-actions">
-              <button className="primary-button" onClick={() => { setStatus("idle"); setContactOpen(true); }}>{t.contact}<ArrowUpRight /></button>
+              <button className="primary-button" onClick={() => { setStatus("idle"); setFieldErrors({}); setContactOpen(true); }}>{t.contact}<ArrowUpRight /></button>
               <a className="text-link" href="/projects">{t.projectsButton}<ArrowDownRight /></a>
             </div>
             <div className="portrait-socials">
@@ -203,10 +237,10 @@ export default function Portfolio() {
         <section className="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-title">
           <button className="modal-close" onClick={() => setContactOpen(false)} aria-label={t.close}><X /></button>
           <p className="section-kicker">CONTACT / FORM</p><h2 id="contact-title">{t.formTitle}</h2><p>{t.formText}</p>
-          <form onSubmit={submitContact}>
-            <label>{t.name}<input name="name" type="text" minLength={2} maxLength={80} required /></label>
-            <label>{t.email}<input name="email" type="email" maxLength={120} required /></label>
-            <label>{t.message}<textarea name="message" minLength={20} maxLength={500} rows={4} required /><small className="character-limit">{t.messageLimit}</small></label>
+          <form onSubmit={submitContact} noValidate onInput={(event) => { const fieldName = (event.target as HTMLInputElement | HTMLTextAreaElement).name; if (fieldName && fieldErrors[fieldName]) setFieldErrors((current) => ({ ...current, [fieldName]: "" })); }} onBlur={(event) => { const field = event.target; if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) || !["name", "email", "message"].includes(field.name)) return; const error = validateContactField(field.name, field.value); setFieldErrors((current) => ({ ...current, [field.name]: error })); }}>
+            <label>{t.name}<input className={fieldErrors.name ? "invalid" : ""} name="name" type="text" minLength={2} maxLength={80} required aria-invalid={Boolean(fieldErrors.name)} aria-describedby={fieldErrors.name ? "name-error" : undefined} /><small className={`field-error ${fieldErrors.name ? "visible" : ""}`} id="name-error" role="alert" aria-hidden={!fieldErrors.name}>{fieldErrors.name || "\u00a0"}</small></label>
+            <label>{t.email}<input className={fieldErrors.email ? "invalid" : ""} name="email" type="email" maxLength={120} required aria-invalid={Boolean(fieldErrors.email)} aria-describedby={fieldErrors.email ? "email-error" : undefined} /><small className={`field-error ${fieldErrors.email ? "visible" : ""}`} id="email-error" role="alert" aria-hidden={!fieldErrors.email}>{fieldErrors.email || "\u00a0"}</small></label>
+            <label>{t.message}<textarea className={fieldErrors.message ? "invalid" : ""} name="message" minLength={20} maxLength={500} rows={4} required aria-invalid={Boolean(fieldErrors.message)} aria-describedby={fieldErrors.message ? "message-error" : undefined} /><small className="character-limit">{t.messageLimit}</small><small className={`field-error ${fieldErrors.message ? "visible" : ""}`} id="message-error" role="alert" aria-hidden={!fieldErrors.message}>{fieldErrors.message || "\u00a0"}</small></label>
             <input className="honey" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <button className="primary-button" type="submit" disabled={status === "loading"}>{status === "loading" ? t.sending : t.send}<ArrowUpRight /></button>
             {status === "success" && <p className="form-message success">{t.success}</p>}

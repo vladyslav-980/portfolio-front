@@ -64,6 +64,7 @@ export const content = {
     messageLimit: "Максимум 500 символів",
     send: "Надіслати",
     sending: "Надсилаємо…",
+    validation: { name: "Введіть щонайменше 2 символи", emailRequired: "Вкажіть електронну пошту", emailInvalid: "Перевірте формат електронної пошти", message: "Напишіть щонайменше 20 символів" },
     success: "Дякую! Повідомлення успішно надіслано.",
     error: "Не вдалося надіслати. Спробуйте ще раз або напишіть на vldgum@gmail.com.",
     close: "Закрити форму",
@@ -107,6 +108,7 @@ export const content = {
     footerTitle: "Have a project or an opening? Let’s talk.", footerText: "Open to Junior Frontend / React / Next.js roles and Full-Stack tasks.",
     formTitle: "Send me a message", formText: "Fill in the form—your message will be delivered to vldgum@gmail.com.",
     name: "Name", email: "Email", message: "Cover letter", messageLimit: "Maximum 500 characters", send: "Send message", sending: "Sending…",
+    validation: { name: "Enter at least 2 characters", emailRequired: "Enter your email address", emailInvalid: "Check the email address format", message: "Enter at least 20 characters" },
     success: "Thank you! Your message has been sent.", error: "Could not send the message. Please try again or email vldgum@gmail.com.", close: "Close form",
   },
 } as const;
