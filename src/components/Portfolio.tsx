@@ -1,10 +1,15 @@
 "use client";
 
 import { FormEvent, MouseEvent, useEffect, useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Github, Linkedin, Mail, MapPin, Menu, X } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu, Send, UserRound, X } from "lucide-react";
 import { content, Language } from "@/data/content";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+
+const NavItemIcon = ({ id }: { id: string }) => {
+  const Icon = id === "about" ? UserRound : id === "skills" ? Layers3 : id === "education" ? GraduationCap : id === "contact" ? Send : FolderKanban;
+  return <Icon className="nav-item-icon" aria-hidden="true" />;
+};
 
 const MonitorIcon = ({ className }: { className?: string }) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"><rect x="3" y="3" width="18" height="13" rx="1" /><path d="M8 21h8M12 16v5" /><g className="monitor-site"><rect x="6" y="6" width="12" height="7" fill="currentColor" stroke="none" /><path d="M8 9h4M8 11h8" stroke="var(--blue)" /></g></svg>;
 const ServerIcon = ({ className }: { className?: string }) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square"><rect x="3" y="3" width="18" height="7" rx="1" /><rect x="3" y="14" width="18" height="7" rx="1" /><circle className="server-light server-light-one" cx="7" cy="6.5" r="1.2" fill="currentColor" stroke="none" /><circle className="server-light server-light-two" cx="7" cy="17.5" r="1.2" fill="currentColor" stroke="none" /></svg>;
@@ -105,7 +110,7 @@ export default function Portfolio() {
           <em className="logo-pixels" aria-hidden="true"><b /><b /><b /><b /><b /></em>
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
-          {t.nav.map(([id, label]) => <a key={id} href={navHref(id)} onClick={(event) => handleNavClick(event, id)}>{label}</a>)}
+          {t.nav.map(([id, label]) => <a key={id} href={navHref(id)} onClick={(event) => handleNavClick(event, id)}><i className="nav-item-dot" aria-hidden="true" /><span>{label}</span><NavItemIcon id={id} /></a>)}
           <div className="language mobile-language" aria-label="Language selector">
             <button className={language === "uk" ? "active" : ""} onClick={() => changeLanguage("uk")}>UA</button>
             <span>/</span>
@@ -159,7 +164,7 @@ export default function Portfolio() {
                   <h2>{t.aboutTabs[activeAboutTab][0]}</h2>
                   <p className="typing-output">{displayedAboutText}<i className="typing-cursor" aria-hidden="true" /></p>
                 </div>
-                <div className="terminal-stats">{t.aboutFacts.map(([value, label]) => <span key={label}><strong>{value}</strong> {label}</span>)}</div>
+                <div className="terminal-stats">{t.aboutFacts.map(([value, label]) => <span key={label}>{label} <strong>{value}</strong></span>)}</div>
               </div>
             </section>
           </div>

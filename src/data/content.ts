@@ -71,8 +71,8 @@ export const content = {
   en: {
     nav: [["about", "About"], ["skills", "Experience"], ["education", "Education"], ["contact", "Contact"], ["projects", "Projects"]],
     eyebrow: "Open to new opportunities",
-    hello: "Hi, I’m Vladyslav.",
-    title: "I design and build web products—from the first pixel to a reliable API.",
+    hello: "Hi, I’m Vlad )",
+    title: "I design and build web products—from the first pixel to a reliable API",
     intro: "Full-Stack JavaScript Developer focused on React, Next.js and Node.js. I turn complex requirements into clear, fast and responsive products.",
     contact: "Contact me", projectsButton: "View projects", available: "Available for remote work", location: "Kyiv, Ukraine",
     aboutKicker: "About me", aboutTitle: "I combine thoughtful design, clean code and practical business logic.",

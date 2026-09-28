@@ -1,8 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowUpRight, Github, Linkedin, Mail, Menu, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, Menu, Send, UserRound, X } from "lucide-react";
 import { content, Language } from "@/data/content";
+
+const NavItemIcon = ({ id }: { id: string }) => {
+  const Icon = id === "about" ? UserRound : id === "skills" ? Layers3 : id === "education" ? GraduationCap : id === "contact" ? Send : FolderKanban;
+  return <Icon className="nav-item-icon" aria-hidden="true" />;
+};
 
 export default function ProjectsPortfolio() {
   const [language, setLanguage] = useState<Language>("uk");
@@ -38,7 +43,7 @@ export default function ProjectsPortfolio() {
           <em className="logo-pixels" aria-hidden="true"><b /><b /><b /><b /><b /></em>
         </a>
         <nav className={menuOpen ? "nav open" : "nav"} aria-label="Main navigation">
-          {t.nav.map(([id, label]) => <a key={id} href={navHref(id)} onClick={() => setMenuOpen(false)}>{label}</a>)}
+          {t.nav.map(([id, label]) => <a key={id} href={navHref(id)} onClick={() => setMenuOpen(false)}><i className="nav-item-dot" aria-hidden="true" /><span>{label}</span><NavItemIcon id={id} /></a>)}
           <div className="language mobile-language" aria-label="Language selector">
             <button className={language === "uk" ? "active" : ""} onClick={() => changeLanguage("uk")}>UA</button>
             <span>/</span>
