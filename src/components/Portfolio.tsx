@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, MouseEvent, useEffect, useState } from "react";
-import { ArrowDownRight, ArrowUpRight, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu, Send, UserRound, X } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Check, FolderKanban, Github, GraduationCap, Layers3, Linkedin, Mail, MapPin, Menu, Send, UserRound, X } from "lucide-react";
 import { content, Language } from "@/data/content";
 import { API_URL } from "@/lib/api";
 
@@ -28,6 +28,7 @@ export default function Portfolio() {
   const [displayedAboutText, setDisplayedAboutText] = useState("");
   const [contactOpen, setContactOpen] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [successClosing, setSuccessClosing] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const t = content[language];
 
@@ -69,6 +70,21 @@ export default function Portfolio() {
     document.body.style.overflow = contactOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [language, contactOpen]);
+
+  useEffect(() => {
+    if (status !== "success") return;
+    setSuccessClosing(false);
+    const fadeTimer = window.setTimeout(() => setSuccessClosing(true), 3000);
+    const closeTimer = window.setTimeout(() => {
+      setContactOpen(false);
+      setStatus("idle");
+      setSuccessClosing(false);
+    }, 3600);
+    return () => {
+      window.clearTimeout(fadeTimer);
+      window.clearTimeout(closeTimer);
+    };
+  }, [status]);
 
   useEffect(() => {
     const fullText = t.aboutTabs[activeAboutTab][1];
@@ -232,8 +248,16 @@ export default function Portfolio() {
         <p className="footer-location"><MapPin aria-hidden="true" />{t.location}</p>
       </footer>
 
-      {contactOpen && <div className="modal-backdrop" role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setContactOpen(false); }}>
-        <section className="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+      {contactOpen && <div className={`modal-backdrop ${successClosing ? "success-closing" : ""}`} role="presentation" onMouseDown={(e) => { if (e.target === e.currentTarget) setContactOpen(false); }}>
+        <section className={`contact-modal ${status === "success" ? "contact-success-modal" : ""}`} role="dialog" aria-modal="true" aria-labelledby="contact-title">
+          {status === "success" ? <div className="contact-success" role="status" aria-live="polite">
+            <div className="contact-success-copy">
+              <p className="section-kicker">MESSAGE / SENT</p>
+              <h2 id="contact-title">{language === "uk" ? "Дякую!" : "Thank you!"}</h2>
+              <p>{language === "uk" ? "Ваше повідомлення успішно надіслано. Я зв’яжуся з вами найближчим часом." : "Your message has been sent successfully. I’ll get back to you soon."}</p>
+            </div>
+            <span className="contact-success-check" aria-hidden="true"><Check /></span>
+          </div> : <>
           <button className="modal-close" onClick={() => setContactOpen(false)} aria-label={t.close}><X /></button>
           <p className="section-kicker">CONTACT / FORM</p><h2 id="contact-title">{t.formTitle}</h2><p>{t.formText}</p>
           <form onSubmit={submitContact} noValidate onInput={(event) => { const fieldName = (event.target as HTMLInputElement | HTMLTextAreaElement).name; if (fieldName && fieldErrors[fieldName]) setFieldErrors((current) => ({ ...current, [fieldName]: "" })); }} onBlur={(event) => { const field = event.target; if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) || !["name", "email", "message"].includes(field.name)) return; const error = validateContactField(field.name, field.value); setFieldErrors((current) => ({ ...current, [field.name]: error })); }}>
@@ -242,9 +266,9 @@ export default function Portfolio() {
             <label>{t.message}<textarea className={fieldErrors.message ? "invalid" : ""} name="message" minLength={20} maxLength={500} rows={4} required aria-invalid={Boolean(fieldErrors.message)} aria-describedby={fieldErrors.message ? "message-error" : undefined} /><small className="character-limit">{t.messageLimit}</small><small className={`field-error ${fieldErrors.message ? "visible" : ""}`} id="message-error" role="alert" aria-hidden={!fieldErrors.message}>{fieldErrors.message || "\u00a0"}</small></label>
             <input className="honey" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <button className="primary-button" type="submit" disabled={status === "loading"}>{status === "loading" ? t.sending : t.send}<ArrowUpRight /></button>
-            {status === "success" && <p className="form-message success">{t.success}</p>}
             {status === "error" && <p className="form-message error">{t.error}</p>}
           </form>
+          </>}
         </section>
       </div>}
     </main>

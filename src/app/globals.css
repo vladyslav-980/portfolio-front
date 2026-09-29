@@ -244,6 +244,15 @@ a { color: inherit; text-decoration: none; }
 .field-error.visible { visibility: visible; opacity: 1; }
 .field-error::before { content: "!"; position: absolute; left: 8px; top: 50%; display: grid; place-items: center; width: 12px; height: 12px; background: #ff6060; color: var(--black); font: 700 10px/1 monospace; transform: translateY(-50%); }
 .contact-modal form .primary-button { justify-self: start; }.contact-modal .honey { position: absolute; left: -9999px; }.form-message { margin: 0!important; font-size: 13px; }.form-message.success { color: var(--green); }.form-message.error { color: #ff6060; }
+.contact-success-modal { width: min(650px,100%); min-height: 400px; display: grid; place-items: center; animation: contact-success-window-in 1s cubic-bezier(.2,.85,.25,1) both; }
+.contact-success { width: 100%; display: grid; justify-items: center; gap: 34px; text-align: center; }
+.contact-success-copy { opacity: 0; transform: translateY(18px); animation: contact-success-copy-in 1s ease 1s forwards; }
+.contact-success-copy .section-kicker { margin-bottom: 18px; }
+.contact-success-copy h2 { margin: 0 0 20px; padding: 0; color: var(--white); }
+.contact-success-copy>p:last-child { max-width: 470px; margin: 0 auto; color: #c4c9d0; font-size: 20px; line-height: 1.45; }
+.contact-success-check { width: 86px; height: 86px; display: grid; place-items: center; border: 3px solid var(--green); background: var(--black); color: var(--green); box-shadow: 7px 7px 0 var(--green); opacity: 0; transform: scale(.35) rotate(-12deg); animation: contact-success-check-in 1s cubic-bezier(.2,1.2,.3,1) 2s forwards; }
+.contact-success-check svg { width: 52px; height: 52px; stroke-width: 3; stroke-dasharray: 40; stroke-dashoffset: 40; animation: contact-success-check-draw 1s ease 2s forwards; }
+.modal-backdrop.success-closing { animation: contact-success-out .6s ease forwards; pointer-events: none; }
 html[lang="en"] body { font-family: var(--font-handjet), "Courier New", monospace; font-weight: 350; }
 html[lang="en"] .hero h1, html[lang="en"] .section h2, html[lang="en"] .footer h2, html[lang="en"] .skill-list h3, html[lang="en"] .projects-hero h1, html[lang="en"] .project-info h2, html[lang="en"] .project-info h3, html[lang="en"] .contact-modal h2 { font-family: var(--font-press-start), "Courier New", monospace; font-weight: 400; }
 html[lang="en"] .hero h1 small, html[lang="en"] .nav, html[lang="en"] .language, html[lang="en"] .eyebrow, html[lang="en"] .section-kicker, html[lang="en"] .hero-intro, html[lang="en"] .hero-meta, html[lang="en"] .primary-button, html[lang="en"] .text-link, html[lang="en"] .inline-email, html[lang="en"] .code-tag, html[lang="en"] .mono-note, html[lang="en"] .skill-list p, html[lang="en"] .project-description, html[lang="en"] .project-info>p:first-child, html[lang="en"] .stack, html[lang="en"] .project-info a, html[lang="en"] .review-grid footer, html[lang="en"] .timeline time, html[lang="en"] .timeline p, html[lang="en"] .socials a, html[lang="en"] .contact-modal label, html[lang="en"] .contact-modal input, html[lang="en"] .contact-modal textarea, html[lang="en"] .form-message { font-family: var(--font-handjet), "Courier New", monospace; }
@@ -496,6 +505,24 @@ html[lang="en"] .main-bento .left-about .profile-info .lead { font-size: 18px; l
 
 
 @keyframes blink { 50% { opacity: .25; } }
+@keyframes contact-success-window-in {
+  from { opacity: 0; transform: translateY(24px) scale(.94); clip-path: inset(48% 0 48% 0); }
+  to { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0); }
+}
+@keyframes contact-success-copy-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes contact-success-check-in {
+  0% { opacity: 0; transform: scale(.35) rotate(-12deg); }
+  65% { opacity: 1; transform: scale(1.12) rotate(2deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes contact-success-check-draw { to { stroke-dashoffset: 0; } }
+@keyframes contact-success-out {
+  from { opacity: 1; }
+  to { opacity: 0; transform: scale(.97); }
+}
 @keyframes pixel-snake-border { 0% { --snake-angle: 0deg; opacity: 0; } 8%,88% { opacity: 1; } 100% { --snake-angle: 360deg; opacity: 0; } }
 @keyframes server-light-blink { 0%,45% { opacity: .2; } 50%,95% { opacity: 1; filter: drop-shadow(0 0 3px var(--green)); } 100% { opacity: .2; } }
 @keyframes workflow-travel { 0% { opacity: .25; stroke-dashoffset: 28; } 15% { opacity: 1; } 68% { opacity: 1; stroke-dashoffset: 0; } 82%,100% { opacity: .2; stroke-dashoffset: 0; } }
