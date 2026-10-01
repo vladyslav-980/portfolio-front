@@ -74,12 +74,12 @@ export default function Portfolio() {
   useEffect(() => {
     if (status !== "success") return;
     setSuccessClosing(false);
-    const fadeTimer = window.setTimeout(() => setSuccessClosing(true), 3000);
+    const fadeTimer = window.setTimeout(() => setSuccessClosing(true), 7000);
     const closeTimer = window.setTimeout(() => {
       setContactOpen(false);
       setStatus("idle");
       setSuccessClosing(false);
-    }, 3600);
+    }, 7600);
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(closeTimer);
@@ -105,7 +105,7 @@ export default function Portfolio() {
       if (!value) return t.validation.emailRequired;
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : t.validation.emailInvalid;
     }
-    if (fieldName === "message") return value.length < 20 ? t.validation.message : "";
+    if (fieldName === "message") return value.length < 10 ? t.validation.message : "";
     return "";
   };
 
@@ -263,7 +263,7 @@ export default function Portfolio() {
           <form onSubmit={submitContact} noValidate onInput={(event) => { const fieldName = (event.target as HTMLInputElement | HTMLTextAreaElement).name; if (fieldName && fieldErrors[fieldName]) setFieldErrors((current) => ({ ...current, [fieldName]: "" })); }} onBlur={(event) => { const field = event.target; if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) || !["name", "email", "message"].includes(field.name)) return; const error = validateContactField(field.name, field.value); setFieldErrors((current) => ({ ...current, [field.name]: error })); }}>
             <label>{t.name}<input className={fieldErrors.name ? "invalid" : ""} name="name" type="text" minLength={2} maxLength={80} required aria-invalid={Boolean(fieldErrors.name)} aria-describedby={fieldErrors.name ? "name-error" : undefined} /><small className={`field-error ${fieldErrors.name ? "visible" : ""}`} id="name-error" role="alert" aria-hidden={!fieldErrors.name}>{fieldErrors.name || "\u00a0"}</small></label>
             <label>{t.email}<input className={fieldErrors.email ? "invalid" : ""} name="email" type="email" maxLength={120} required aria-invalid={Boolean(fieldErrors.email)} aria-describedby={fieldErrors.email ? "email-error" : undefined} /><small className={`field-error ${fieldErrors.email ? "visible" : ""}`} id="email-error" role="alert" aria-hidden={!fieldErrors.email}>{fieldErrors.email || "\u00a0"}</small></label>
-            <label>{t.message}<textarea className={fieldErrors.message ? "invalid" : ""} name="message" minLength={20} maxLength={500} rows={4} required aria-invalid={Boolean(fieldErrors.message)} aria-describedby={fieldErrors.message ? "message-error" : undefined} /><small className="character-limit">{t.messageLimit}</small><small className={`field-error ${fieldErrors.message ? "visible" : ""}`} id="message-error" role="alert" aria-hidden={!fieldErrors.message}>{fieldErrors.message || "\u00a0"}</small></label>
+            <label>{t.message}<textarea className={fieldErrors.message ? "invalid" : ""} name="message" minLength={10} maxLength={500} rows={4} required aria-invalid={Boolean(fieldErrors.message)} aria-describedby={fieldErrors.message ? "message-error" : undefined} /><small className="character-limit">{t.messageLimit}</small><small className={`field-error ${fieldErrors.message ? "visible" : ""}`} id="message-error" role="alert" aria-hidden={!fieldErrors.message}>{fieldErrors.message || "\u00a0"}</small></label>
             <input className="honey" name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" />
             <button className="primary-button" type="submit" disabled={status === "loading"}>{status === "loading" ? t.sending : t.send}<ArrowUpRight /></button>
             {status === "error" && <p className="form-message error">{t.error}</p>}
