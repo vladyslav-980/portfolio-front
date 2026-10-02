@@ -22,6 +22,16 @@ const NavItemIcon = ({ id }: { id: string }) => {
   return <Icon className="nav-item-icon" aria-hidden="true" />;
 };
 
+const ProjectsWindowIcon = () => (
+  <svg viewBox="0 0 128 112" aria-hidden="true">
+    <path className="icon-shadow" d="M12 27h42l9 10h53v65H12z" />
+    <path className="icon-folder" d="M7 20h44l10 11h60v65H7z" />
+    <path className="icon-screen" d="M18 42h92v40H18z" />
+    <path className="icon-line" d="M28 53h35M28 63h56M28 73h42" />
+    <path className="icon-braces" d="M91 52c-5 0-6 3-6 7v2c0 3-2 5-5 5 3 0 5 2 5 5v2c0 4 1 7 6 7M99 52c5 0 6 3 6 7v2c0 3 2 5 5 5-3 0-5 2-5 5v2c0 4-1 7-6 7" />
+  </svg>
+);
+
 export default function ProjectsPortfolio() {
   const [language, setLanguage] = useState<Language>("uk");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,10 +46,41 @@ export default function ProjectsPortfolio() {
   const [successClosing, setSuccessClosing] = useState(false);
   const [crtSignalActive, setCrtSignalActive] = useState(false);
   const [resultsSignalActive, setResultsSignalActive] = useState(false);
+  const [projectsWindowMode, setProjectsWindowMode] = useState<"normal" | "minimized" | "maximized" | "closed">("normal");
+  const [projectsWindowTransition, setProjectsWindowTransition] = useState<"idle" | "into-folder" | "launcher-opening" | "out-of-folder">("idle");
   const crtSignalTimer = useRef<number | null>(null);
   const resultsSignalStartTimer = useRef<number | null>(null);
   const resultsSignalEndTimer = useRef<number | null>(null);
+  const windowTransitionTimer = useRef<number | null>(null);
+  const windowTransitionEndTimer = useRef<number | null>(null);
+  const projectsWindowBodyRef = useRef<HTMLDivElement | null>(null);
   const t = content[language];
+
+  const clearWindowTransitionTimers = () => {
+    if (windowTransitionTimer.current) window.clearTimeout(windowTransitionTimer.current);
+    if (windowTransitionEndTimer.current) window.clearTimeout(windowTransitionEndTimer.current);
+  };
+
+  const sendWindowToFolder = (nextMode: "minimized" | "closed") => {
+    if (projectsWindowTransition !== "idle") return;
+    clearWindowTransitionTimers();
+    setProjectsWindowTransition("into-folder");
+    windowTransitionTimer.current = window.setTimeout(() => {
+      setProjectsWindowMode(nextMode);
+      setProjectsWindowTransition("idle");
+    }, 140);
+  };
+
+  const restoreWindowFromFolder = () => {
+    if (projectsWindowTransition !== "idle") return;
+    clearWindowTransitionTimers();
+    setProjectsWindowTransition("launcher-opening");
+    windowTransitionTimer.current = window.setTimeout(() => {
+      setProjectsWindowMode("normal");
+      setProjectsWindowTransition("out-of-folder");
+      windowTransitionEndTimer.current = window.setTimeout(() => setProjectsWindowTransition("idle"), 175);
+    }, 80);
+  };
 
   const triggerCrtSignal = () => {
     if (crtSignalTimer.current) window.clearTimeout(crtSignalTimer.current);
@@ -91,6 +132,10 @@ export default function ProjectsPortfolio() {
     };
   }, [query, projectFilter]);
 
+  useEffect(() => {
+    projectsWindowBodyRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [query, projectFilter, projectsStatus]);
+
   const projectTypeLabel = (type: string) => {
     const labels: Record<string, Record<Language, string>> = {
       commercial: { uk: "Комерційний проєкт", en: "Commercial project" },
@@ -109,6 +154,7 @@ export default function ProjectsPortfolio() {
     if (crtSignalTimer.current) window.clearTimeout(crtSignalTimer.current);
     if (resultsSignalStartTimer.current) window.clearTimeout(resultsSignalStartTimer.current);
     if (resultsSignalEndTimer.current) window.clearTimeout(resultsSignalEndTimer.current);
+    clearWindowTransitionTimers();
   }, []);
 
   const changeLanguage = (nextLanguage: Language) => {
@@ -118,9 +164,22 @@ export default function ProjectsPortfolio() {
 
   useEffect(() => {
     document.documentElement.lang = language;
-    document.body.style.overflow = contactOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [language, contactOpen]);
+    document.body.style.overflow = contactOpen || projectsWindowMode === "maximized" ? "hidden" : "";
+    document.body.classList.toggle("projects-window-fullscreen", projectsWindowMode === "maximized");
+    return () => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("projects-window-fullscreen");
+    };
+  }, [language, contactOpen, projectsWindowMode]);
+
+  useEffect(() => {
+    if (projectsWindowMode !== "maximized") return;
+    const restoreWindow = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setProjectsWindowMode("normal");
+    };
+    window.addEventListener("keydown", restoreWindow);
+    return () => window.removeEventListener("keydown", restoreWindow);
+  }, [projectsWindowMode]);
 
   useEffect(() => {
     if (contactStatus !== "success") return;
@@ -229,18 +288,35 @@ export default function ProjectsPortfolio() {
       </section>
 
       <section className={`section projects ${resultsSignalActive ? "signal-scan" : ""}`}>
-        <div className="project-list" key={`${query}-${projectFilter}-${projectsStatus}`}>{projectsStatus === "success" && projects.map((project, index) => (
-          <article className="project-card project-card-enter" key={project._id} style={{ animationDelay: `${index * 160}ms` }}>
-            <div className="project-info"><p>{projectTypeLabel(project.type)}</p><h2>{project.title[language]}</h2><p className="project-description">{project.description[language]}</p><a className="project-open-button" href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer">{t.viewProject}<ArrowUpRight /></a></div>
-            <div className="project-media">
-              <a className={`project-visual visual-${index % 3 + 1}${project.imageUrl ? " has-image" : ""}`} href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer" aria-label={`${t.viewProject}: ${project.title[language]}`} style={project.imageUrl ? { backgroundImage: `url(${project.imageUrl})` } : undefined}><strong>{project.title[language].slice(0, 2).toUpperCase()}</strong></a>
-              <span className="stack"><span>{project.stack.join(" · ")}</span><Braces aria-hidden="true" /></span>
+        {projectsWindowMode === "minimized" || projectsWindowMode === "closed" ? (
+          <button className={`projects-window-launcher ${projectsWindowMode} ${projectsWindowTransition === "launcher-opening" ? "launcher-opening" : ""}`} type="button" onClick={restoreWindowFromFolder} disabled={projectsWindowTransition !== "idle"} aria-label={language === "uk" ? "Відкрити вікно проєктів" : "Open projects window"}>
+            <ProjectsWindowIcon />
+            <span>{projectsWindowMode === "minimized" ? (language === "uk" ? "ПРОЄКТИ ЗГОРНУТО" : "PROJECTS MINIMIZED") : (language === "uk" ? "ВІДКРИТИ ПРОЄКТИ" : "OPEN PROJECTS")}</span>
+          </button>
+        ) : <div className={`projects-window ${projectsWindowMode === "maximized" ? "maximized" : ""} ${projectsWindowTransition === "into-folder" ? "into-folder" : ""} ${projectsWindowTransition === "out-of-folder" ? "out-of-folder" : ""}`}>
+          <div className="projects-window-titlebar">
+            <span><i aria-hidden="true" />{language === "uk" ? "ПРОЄКТИ.EXE" : "PROJECTS.EXE"}</span>
+            <div className="projects-window-controls" aria-label={language === "uk" ? "Керування вікном" : "Window controls"}>
+              <button type="button" disabled={projectsWindowTransition !== "idle"} onClick={() => sendWindowToFolder("minimized")} aria-label={language === "uk" ? "Згорнути" : "Minimize"}>—</button>
+              <button type="button" disabled={projectsWindowTransition !== "idle"} onClick={() => setProjectsWindowMode(projectsWindowMode === "maximized" ? "normal" : "maximized")} aria-label={projectsWindowMode === "maximized" ? (language === "uk" ? "Відновити розмір" : "Restore") : (language === "uk" ? "Розгорнути" : "Maximize")} aria-pressed={projectsWindowMode === "maximized"}>{projectsWindowMode === "maximized" ? "❐" : "□"}</button>
+              <button type="button" disabled={projectsWindowTransition !== "idle"} onClick={() => sendWindowToFolder("closed")} className="window-close" aria-label={language === "uk" ? "Закрити" : "Close"}>×</button>
             </div>
-          </article>
-        ))}</div>
-        {projectsStatus === "loading" && <p className="projects-empty projects-loading">{filterCopy.loading}</p>}
-        {projectsStatus === "error" && <p className="projects-empty">{filterCopy.error}</p>}
-        {projectsStatus === "success" && projects.length === 0 && <p className="projects-empty">{filterCopy.empty}</p>}
+          </div>
+          <div className="projects-window-body" ref={projectsWindowBodyRef}>
+            <div className="project-list" key={`${query}-${projectFilter}-${projectsStatus}`}>{projectsStatus === "success" && projects.map((project, index) => (
+              <article className="project-card project-card-enter" key={project._id} style={{ animationDelay: `${index * 160}ms` }}>
+                <div className="project-info"><p>{projectTypeLabel(project.type)}</p><h2>{project.title[language]}</h2><p className="project-description">{project.description[language]}</p><a className="project-open-button" href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer">{t.viewProject}<ArrowUpRight /></a></div>
+                <div className="project-media">
+                  <a className={`project-visual visual-${index % 3 + 1}${project.imageUrl ? " has-image" : ""}`} href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer" aria-label={`${t.viewProject}: ${project.title[language]}`} style={project.imageUrl ? { backgroundImage: `url(${project.imageUrl})` } : undefined}><strong>{project.title[language].slice(0, 2).toUpperCase()}</strong></a>
+                  <span className="stack"><span>{project.stack.join(" · ")}</span><Braces aria-hidden="true" /></span>
+                </div>
+              </article>
+            ))}</div>
+            {projectsStatus === "loading" && <p className="projects-empty projects-loading">{filterCopy.loading}</p>}
+            {projectsStatus === "error" && <p className="projects-empty projects-error">{filterCopy.error}</p>}
+            {projectsStatus === "success" && projects.length === 0 && <p className="projects-empty">{filterCopy.empty}</p>}
+          </div>
+        </div>}
       </section>
 
       <section className="section reviews" id="reviews">
