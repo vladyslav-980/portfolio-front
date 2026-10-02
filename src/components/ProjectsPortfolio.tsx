@@ -303,7 +303,7 @@ export default function ProjectsPortfolio() {
           </div>
           <div className="projects-window-body" ref={projectsWindowBodyRef}>
             <div className="project-list" key={`${query}-${projectFilter}-${projectsStatus}`}>{projectsStatus === "success" && projects.map((project, index) => (
-              <article className="project-card project-card-enter" key={project._id} style={{ animationDelay: `${index * 160}ms` }}>
+              <article className="project-card project-card-enter" key={project._id} style={{ animationDelay: `${index * 70}ms` }}>
                 <div className="project-info"><p>{projectTypeLabel(project.type)}</p><h2>{project.title[language]}</h2><p className="project-description">{project.description[language]}</p><a className="project-open-button" href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer">{t.viewProject}<ArrowUpRight /></a></div>
                 <div className="project-media">
                   <a className={`project-visual visual-${index % 3 + 1}${project.imageUrl ? " has-image" : ""}`} href={project.liveUrl || project.githubUrl || "#"} target="_blank" rel="noreferrer" aria-label={`${t.viewProject}: ${project.title[language]}`} style={project.imageUrl ? { backgroundImage: `url(${project.imageUrl})` } : undefined}><strong>{project.title[language].slice(0, 2).toUpperCase()}</strong></a>

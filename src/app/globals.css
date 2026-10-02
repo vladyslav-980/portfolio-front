@@ -240,7 +240,7 @@ body.projects-window-fullscreen .site-header { visibility: hidden; pointer-event
 .project-list { margin-top: 35px; display: grid; gap: 90px; }
 .project-list:empty { display: none; }
 .project-card { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: clamp(30px,5vw,76px); align-items: stretch; padding: clamp(24px,3.5vw,52px); border: 2px solid var(--white); background: var(--black); box-shadow: 10px 10px 0 var(--blue-light); }
-.project-card-enter { opacity: 0; animation: project-result-enter .55s steps(6,end) forwards; }
+.project-card-enter { opacity: 0; will-change: opacity,transform; animation: project-result-enter .3s cubic-bezier(.2,.8,.2,1) forwards; }
 .project-info { min-height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; }
 .project-media { min-width: 0; display: grid; gap: 22px; }
 .project-visual { position: relative; aspect-ratio: 16/10; display: grid; place-items: center; overflow: hidden; background: var(--blue) center/cover no-repeat; border: 2px solid var(--white); box-shadow: 10px 10px 0 var(--green); transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, filter .16s ease; }
@@ -381,6 +381,20 @@ body.projects-window-fullscreen .site-header { visibility: hidden; pointer-event
 .copyright-footer .footer-socials { position: absolute; left: 50%; margin: 0; flex-direction: row; justify-content: center; gap: clamp(12px,2vw,28px); transform: translateX(-50%); }
 .copyright-footer .footer-socials a { padding: 0 2px; border: 0; background: transparent; box-shadow: none; color: #747b85; }
 .copyright-footer .footer-socials a:hover, .copyright-footer .footer-socials a:focus-visible { background: transparent; color: var(--green); box-shadow: none; outline: none; }
+
+@media(min-width:2001px) {
+  .projects-page { --projects-wide-gutter: max(110px,calc((100vw - 1800px) / 2)); }
+  .projects-page .site-header,
+  .projects-page .projects-filter-panel,
+  .projects-page .section,
+  .projects-page .projects-footer { padding-left: var(--projects-wide-gutter); padding-right: var(--projects-wide-gutter); }
+  .projects-page .projects-filter-layout,
+  .projects-page .projects-window { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; }
+  .projects-page .reviews>.section-kicker,
+  .projects-page .reviews>.section-grid,
+  .projects-page .reviews>.review-grid { width: 100%; max-width: 1800px; margin-left: auto; margin-right: auto; }
+  .projects-page .project-contact>div:first-child { width: 100%; margin-left: auto; margin-right: auto; }
+}
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.88); display: grid; place-items: center; padding: 12px; }
 .contact-modal { position: relative; width: min(650px,100%); max-height: calc(100dvh - 24px); overflow: hidden; background: var(--blue); border: 2px solid var(--white); padding: clamp(20px,4vh,38px); box-shadow: 12px 12px 0 var(--green); }
@@ -733,9 +747,8 @@ html[lang="en"] .main-bento .left-about .profile-info .lead { font-size: 18px; l
   100% { transform: scale(.96); filter: brightness(1.35); }
 }
 @keyframes project-result-enter {
-  0% { opacity: 0; transform: translateY(26px); clip-path: inset(0 100% 0 0); }
-  55% { opacity: 1; transform: translateY(8px); }
-  100% { opacity: 1; transform: translateY(0); clip-path: inset(0); }
+  0% { opacity: 0; transform: translateY(14px) scale(.985); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes contact-success-window-in {
   from { opacity: 0; transform: translateY(24px) scale(.94); clip-path: inset(48% 0 48% 0); }
