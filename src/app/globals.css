@@ -321,7 +321,7 @@ body.projects-window-fullscreen .site-header { visibility: hidden; pointer-event
 .projects-page .section.projects .project-info>p:first-child,
 .projects-page .section.projects .stack,
 .projects-page .section.projects .projects-loading { color: var(--green); }
-.projects-page .section.projects .project-visual { border: 5px solid #34cf43; border-color: #7dff6a #15952e #15952e #7dff6a; background-color: #071710; box-shadow: inset 0 0 0 2px #34cf43, 7px 7px 0 #08752a, 10px 10px 0 var(--blue-light); filter: saturate(.58) contrast(.94) brightness(.86); }
+.projects-page .section.projects .project-visual { border: 5px solid #7dff6a; background-color: #071710; box-shadow: none; filter: saturate(.58) contrast(.94) brightness(.86); }
 .projects-page .section.projects .project-visual::before { border-color: var(--green); }
 .projects-page .section.projects .project-visual::after { border-color: #9aa69b; }
 .projects-page .section.projects .project-visual.has-image::before,
@@ -329,10 +329,10 @@ body.projects-window-fullscreen .site-header { visibility: hidden; pointer-event
 .projects-page .section.projects .project-visual.has-image::before { z-index: 2; background: repeating-linear-gradient(0deg,rgba(57,255,20,.075) 0 1px,transparent 1px 4px); mix-blend-mode: screen; }
 .projects-page .section.projects .project-visual.has-image::after { z-index: 3; background: radial-gradient(ellipse at center,transparent 48%,rgba(0,12,7,.58) 100%), linear-gradient(rgba(54,91,64,.1),rgba(0,18,10,.22)); box-shadow: inset 0 0 28px rgba(0,0,0,.72); }
 .projects-page .section.projects .project-visual:hover,
-.projects-page .section.projects .project-visual:focus-visible { border-color: #7dff6a #15952e #15952e #7dff6a; box-shadow: inset 0 0 0 2px #34cf43, 3px 3px 0 #08752a, 5px 5px 0 var(--blue-light); filter: saturate(.7) contrast(.98) brightness(.94); }
+.projects-page .section.projects .project-visual:focus-visible { border-color: #7dff6a; box-shadow: none; filter: saturate(.7) contrast(.98) brightness(.94); }
 .projects-page .section.projects .project-visual:active { box-shadow: none; filter: saturate(.6) brightness(.78); }
 .projects-page .section.projects .project-visual strong { color: #cbd2c7; text-shadow: 5px 5px 0 var(--green); }
-.projects-page .section.projects .stack { border: 4px solid #34cf43; border-color: #7dff6a #15952e #15952e #7dff6a; background: linear-gradient(90deg,#081b13,#0a2017); box-shadow: inset 0 0 0 2px #34cf43, inset 0 0 18px rgba(0,0,0,.65), 5px 5px 0 #08752a; }
+.projects-page .section.projects .stack { border: 4px solid #34cf43; border-color: #7dff6a #15952e #15952e #7dff6a; background: linear-gradient(90deg,#081b13,#0a2017); box-shadow: none; }
 .projects-page .section.projects .stack svg { color: var(--green); }
 .projects-page .section.projects .project-info a.project-open-button { border: 4px solid #34cf43; border-color: #7dff6a #15952e #15952e #7dff6a; background: #030a07; color: #c5ccc3; box-shadow: inset 0 0 0 2px #34cf43, 5px 5px 0 #08752a, 8px 8px 0 var(--blue-light); }
 .projects-page .section.projects .project-info a.project-open-button:hover,
@@ -1095,8 +1095,8 @@ html[lang="en"] .main-bento .left-about .profile-info .lead { font-size: 18px; l
   .projects-window-body .stack>svg { width: 21px; height: 21px; }
   .projects-window-body .project-info a.project-open-button { min-height: 42px; padding: 8px 11px; }
   .projects-page .section.projects .project-card { border-width: 4px; box-shadow: inset 0 0 0 2px #34cf43,inset 0 0 24px rgba(0,0,0,.8),4px 4px 0 #08752a,6px 6px 0 var(--blue-light); }
-  .projects-page .section.projects .project-visual { border-width: 3px; box-shadow: inset 0 0 0 1px #34cf43,4px 4px 0 #08752a,6px 6px 0 var(--blue-light); }
-  .projects-page .section.projects .stack,
+  .projects-page .section.projects .project-visual { border-width: 3px; border-color: #7dff6a; box-shadow: none; }
+  .projects-page .section.projects .stack { border-width: 3px; box-shadow: none; }
   .projects-page .section.projects .project-info a.project-open-button { border-width: 3px; box-shadow: inset 0 0 0 1px #34cf43,3px 3px 0 #08752a,5px 5px 0 var(--blue-light); }
   .projects-page .section.projects .projects-error,
   .projects-page .section.projects .projects-loading,
