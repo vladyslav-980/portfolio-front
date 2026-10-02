@@ -28,7 +28,6 @@ const ProjectsWindowIcon = () => (
     <path className="icon-folder" d="M7 20h44l10 11h60v65H7z" />
     <path className="icon-screen" d="M18 42h92v40H18z" />
     <path className="icon-line" d="M28 53h35M28 63h56M28 73h42" />
-    <path className="icon-braces" d="M91 52c-5 0-6 3-6 7v2c0 3-2 5-5 5 3 0 5 2 5 5v2c0 4 1 7 6 7M99 52c5 0 6 3 6 7v2c0 3 2 5 5 5-3 0-5 2-5 5v2c0 4-1 7-6 7" />
   </svg>
 );
 

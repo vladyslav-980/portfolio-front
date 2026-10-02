@@ -268,7 +268,7 @@ body.projects-window-fullscreen .site-header { visibility: hidden; pointer-event
   text-shadow: 0 0 3px rgba(57,255,20,.58), 1px 1px 0 #001b0d;
 }
 .projects-page .section.projects,
-.projects-page .section.projects:has(.projects-loading) { width: 100%; height: 900px; min-height: 900px; max-height: 900px; display: flex; align-items: center; padding: 100px clamp(22px,4vw,64px); border: 0; outline: 0; color: #bdc7bc; box-shadow: inset 0 0 55px #000, inset 0 0 20px rgba(57,255,20,.2); }
+.projects-page .section.projects:has(.projects-loading) { width: 100%; height: 800px; min-height: 800px; max-height: 800px; display: flex; align-items: center; padding: 50px clamp(22px,4vw,64px); border: 0; outline: 0; color: #bdc7bc; box-shadow: inset 0 0 55px #000, inset 0 0 20px rgba(57,255,20,.2); }
 .projects-window { width: min(100%,1670px); height: 700px; margin-inline: auto; overflow: hidden; display: grid; grid-template-rows: auto minmax(0,1fr); border: clamp(8px,1vw,14px) solid #34cf43; border-color: #7dff6a #15952e #15952e #7dff6a; outline: 3px solid #08752a; outline-offset: -6px; background: #020b07; box-shadow: none; }
 .projects-window-titlebar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-left: clamp(13px,2vw,22px); border-bottom: 4px solid #08752a; background: linear-gradient(90deg,var(--blue-light),var(--blue)); color: var(--white); }
 .projects-window-titlebar>span { min-width: 0; display: flex; align-items: center; gap: 10px; overflow: hidden; font-size: clamp(12px,1.2vw,16px); font-weight: 700; letter-spacing: .08em; white-space: nowrap; text-overflow: ellipsis; }
@@ -1020,6 +1020,9 @@ html[lang="en"] .main-bento .left-about .profile-info .lead { font-size: 18px; l
   .contact-modal form .primary-button { padding: 9px 14px; }
 }
 @media(max-width:900px) {
+  .projects-page .section.projects,
+  .projects-page .section.projects:has(.projects-loading) { height: 650px; min-height: 650px; max-height: 650px; padding-block: 50px; }
+  .projects-window:not(.maximized) { height: 550px; }
   .projects-filter-layout { display: block; width: 100%; }
   .projects-filter-heading { display: block; width: min(100%,700px); margin: 0 auto clamp(28px,5vw,42px); }
   .projects-filter-heading .section-kicker { margin: 0 0 clamp(14px,2.5vw,22px); }
@@ -1058,8 +1061,19 @@ html[lang="en"] .main-bento .left-about .profile-info .lead { font-size: 18px; l
 }
 @media(max-width:620px) {
   .projects-page .section.projects,
-  .projects-page .section.projects:has(.projects-loading) { padding: 0; }
-  .projects-window:not(.maximized) { width: 100%; height: 900px; }
+  .projects-page .section.projects:has(.projects-loading) { height: 650px; min-height: 650px; max-height: 650px; padding: 0; }
+  .projects-window:not(.maximized) { width: 100%; height: 100%; margin: 0; }
+  .projects-window-body .project-card { grid-template-rows: auto auto minmax(130px,1fr) auto auto auto; padding: 14px; }
+  .projects-window-body .project-info h2 { margin-bottom: 10px; font-size: clamp(18px,6vw,27px); }
+  .projects-window-body .project-description { margin-bottom: 10px; font-size: 12px; line-height: 1.35; -webkit-line-clamp: 3; line-clamp: 3; }
+  .projects-window-body .project-visual { min-height: 130px; margin-bottom: 10px; }
+  .projects-window-body .stack { min-height: 42px; margin-bottom: 10px; padding: 6px 9px; font-size: 12px; line-height: 1.3; }
+  .projects-window-body .stack>span { overflow-wrap: anywhere; }
+  .projects-window-body .stack>svg { width: 21px; height: 21px; }
+  .projects-window-body .project-info a.project-open-button { min-height: 42px; padding: 8px 11px; }
+  .projects-page .section.projects .projects-error,
+  .projects-page .section.projects .projects-loading,
+  .projects-page .section.projects .projects-empty { width: calc(100% - 24px); max-width: calc(100% - 24px); padding: 20px 12px; overflow-wrap: anywhere; font-size: clamp(11px,3.8vw,15px); line-height: 1.45; }
 }
 @media(max-width:480px) {
   .projects-filter-panel { padding-inline: 14px; }
@@ -1073,12 +1087,12 @@ html[lang="en"] .main-bento .left-about .profile-info .lead { font-size: 18px; l
   .projects-computer .project-filter-group button { width: 100%; min-height: 42px; font-size: clamp(9px,2.9vw,11px); }
   .projects-computer .projects-console { height: 74px; font-size: clamp(7px,2.45vw,9px); }
   .projects-page .section.projects { padding: 0; box-shadow: inset 0 0 38px #000, inset 0 0 14px rgba(57,255,20,.18); }
-  .projects-window { width: 100%; height: 900px; border-width: 7px; outline-width: 2px; outline-offset: -4px; box-shadow: none; }
+  .projects-window { width: 100%; height: 100%; border-width: 7px; outline-width: 2px; outline-offset: -4px; box-shadow: none; }
   .projects-window-titlebar { min-height: 42px; padding-left: 10px; }
   .projects-window-titlebar>span { gap: 7px; font-size: 10px; }
   .projects-window-titlebar>span i { width: 9px; height: 9px; }
   .projects-window-controls { grid-template-columns: repeat(3,36px); }
   .projects-window-controls button { font-size: 17px; }
-  .projects-window-body { padding: 16px 12px 20px; }
+  .projects-window-body { padding: 12px 8px 14px; scroll-padding-top: 12px; }
 }
 @media(prefers-reduced-motion:reduce) { html, .projects-window-body { scroll-behavior: auto; }.primary-button { transition: none; }.eyebrow span, .logo-pixels b, .logo:hover>span, .stack-tag, .projects-computer .projects-filter-controls, .projects-computer-screen::before, .project-card-enter { animation: none; opacity: 1; }.page-transition { display: none; } }
