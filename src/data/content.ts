@@ -38,7 +38,7 @@ export const content = {
     projects: [
       { title: "SavMed Clinic", type: "Full-Stack / Commercial", description: "Тримовний сайт медичної клініки з адаптивним інтерфейсом, записом і скасуванням консультацій, API та MongoDB.", stack: "Next.js · TypeScript · Node.js · Express · MongoDB", link: "https://savmed.net" },
       { title: "Tasteorama", type: "Team project", description: "Застосунок рецептів із пошуком, фільтрами, станами завантаження, валідацією, власним Route Handler та REST API.", stack: "Next.js · React · Node.js · MongoDB", link: "https://github.com/Andross-s/final_project_Fullstack-Force_front" },
-      { title: "IceCream", type: "Responsive landing", description: "Комерційний адаптивний лендинг за макетом із семантичною версткою, інтерактивними елементами та mobile-first підходом.", stack: "HTML5 · SASS · JavaScript", link: "https://github.com/70X14" },
+      { title: "IceCream", type: "Responsive landing", description: "Комерційний адаптивний лендинг за макетом із семантичною версткою, інтерактивними елементами та mobile-first підходом.", stack: "HTML5 · SASS · JavaScript", link: "https://github.com/vladyslav-980" },
     ],
     viewProject: "Відкрити проєкт",
     reviewsKicker: "Відгуки",
@@ -96,7 +96,7 @@ export const content = {
     projects: [
       { title: "SavMed Clinic", type: "Full-Stack / Commercial", description: "A multilingual medical clinic website with responsive UI, appointment booking and cancellation, API and MongoDB.", stack: "Next.js · TypeScript · Node.js · Express · MongoDB", link: "https://savmed.net" },
       { title: "Tasteorama", type: "Team project", description: "Recipe application with search, filters, loading states, validation, a custom Route Handler and REST API.", stack: "Next.js · React · Node.js · MongoDB", link: "https://github.com/Andross-s/final_project_Fullstack-Force_front" },
-      { title: "IceCream", type: "Responsive landing", description: "Commercial responsive landing page based on a design layout, with semantic markup and interactive elements.", stack: "HTML5 · SASS · JavaScript", link: "https://github.com/70X14" },
+      { title: "IceCream", type: "Responsive landing", description: "Commercial responsive landing page based on a design layout, with semantic markup and interactive elements.", stack: "HTML5 · SASS · JavaScript", link: "https://github.com/vladyslav-980" },
     ],
     viewProject: "Open project", reviewsKicker: "Testimonials", reviewsTitle: "What people value in collaboration",
     reviews: [

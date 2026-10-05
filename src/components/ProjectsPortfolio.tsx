@@ -140,8 +140,22 @@ export default function ProjectsPortfolio() {
       commercial: { uk: "Комерційний проєкт", en: "Commercial project" },
       pet: { uk: "Пет-проєкт", en: "Pet project" },
       "in-progress": { uk: "В процесі", en: "In progress" },
+      team: { uk: "Командний проєкт", en: "Team project" },
+      educational: { uk: "Навчальний проєкт", en: "Educational project" },
     };
-    return labels[type]?.[language] ?? type;
+    const normalizedType = type.trim().toLowerCase().replace(/[_\s]+/g, "-");
+    const typeKey = normalizedType.includes("commercial")
+      ? "commercial"
+      : normalizedType === "pet" || normalizedType.startsWith("pet-") || normalizedType.startsWith("personal")
+        ? "pet"
+        : normalizedType.includes("progress")
+          ? "in-progress"
+          : normalizedType.startsWith("team")
+            ? "team"
+            : normalizedType.startsWith("education")
+              ? "educational"
+              : normalizedType;
+    return labels[typeKey]?.[language] ?? type;
   };
 
   useEffect(() => {
@@ -330,7 +344,7 @@ export default function ProjectsPortfolio() {
 
       <footer className="footer copyright-footer projects-footer" id="site-footer">
         <p className="copyright">© 2026 Vladyslav Huminiuk</p>
-        <div className="socials footer-socials"><a href="https://github.com/70X14" target="_blank" rel="noreferrer"><Github />GitHub</a><a href="https://www.linkedin.com/in/vladyslav-huminiuk" target="_blank" rel="noreferrer"><Linkedin />LinkedIn</a><a href="mailto:vldgum@gmail.com"><Mail />Email</a></div>
+        <div className="socials footer-socials"><a href="https://github.com/vladyslav-980" target="_blank" rel="noreferrer"><Github />GitHub</a><a href="https://www.linkedin.com/in/vladyslav-huminiuk" target="_blank" rel="noreferrer"><Linkedin />LinkedIn</a><a href="mailto:vldgum@gmail.com"><Mail />Email</a></div>
         <p className="footer-location"><MapPin aria-hidden="true" />{t.location}</p>
       </footer>
 

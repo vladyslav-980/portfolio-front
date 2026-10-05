@@ -194,7 +194,7 @@ export default function Portfolio() {
               <a className="text-link" href="/projects">{t.projectsButton}<ArrowDownRight /></a>
             </div>
             <div className="portrait-socials">
-              <a href="https://github.com/70X14" target="_blank" rel="noreferrer" aria-label="GitHub"><Github />GitHub</a>
+              <a href="https://github.com/vladyslav-980" target="_blank" rel="noreferrer" aria-label="GitHub"><Github />GitHub</a>
               <a href="https://www.linkedin.com/in/vladyslav-huminiuk" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin />LinkedIn</a>
               <a href="mailto:vldgum@gmail.com" aria-label="Email"><Mail />Email</a>
             </div>
