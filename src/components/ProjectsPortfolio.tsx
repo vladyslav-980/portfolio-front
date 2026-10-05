@@ -277,7 +277,7 @@ export default function ProjectsPortfolio() {
         <div className="projects-filter-heading">
           <p className="section-kicker">{t.projectsKicker}</p>
           <h1>{t.projectsTitle}</h1>
-          <p className="projects-filter-description">{language === "uk" ? "Добірка комерційних і власних проєктів — від адаптивного інтерфейсу до серверної логіки та стабільного API." : "A selection of commercial and personal projects—from responsive interfaces to server-side logic and reliable APIs."}</p>
+          <p className="projects-filter-description">{language === "uk" ? "Добірка комерційних і власних проєктів — від адаптивного інтерфейсу до серверної логіки та стабільного API" : "A selection of commercial and personal projects—from responsive interfaces to server-side logic and reliable APIs"}</p>
         </div>
         <div className="projects-computer">
         <div className={`projects-computer-screen ${crtSignalActive ? "signal-hit" : ""}`}>
